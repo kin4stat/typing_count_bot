@@ -161,23 +161,23 @@ async def handler(update: events.UserUpdate):
         asyncio.get_event_loop().create_task(update_timings(chat_id, from_id))
     print(timings[chat_id][from_id]["username"])
 
-@client.on(events.NewMessage)
-async def my_event_handler(event: events.NewMessage):
-    first_day = datetime.datetime.today() - datetime.timedelta(days=datetime.datetime.today().weekday() % 7)
-    first_day = first_day.replace(hour=0, minute=0, second=0, microsecond=0)
+# @client.on(events.NewMessage)
+# async def my_event_handler(event: events.NewMessage):
+#     first_day = datetime.datetime.today() - datetime.timedelta(days=datetime.datetime.today().weekday() % 7)
+#     first_day = first_day.replace(hour=0, minute=0, second=0, microsecond=0)
     
-    if event.raw_text.lower() == "кто больше всех жмет по клаве" or event.raw_text.lower() == "кто больше всех жмет по клаве?":
-        start_week = (first_day - datetime.timedelta(days=7)).strftime("%d.%m.%Y")
-        end_week = (first_day - datetime.timedelta(days=1)).strftime("%d.%m.%Y")
-        result = f"Лучшие мастера клавишного джаза за неделю {start_week} - {end_week}\n"
-        async with async_session() as session:
-            db_res = await session.execute(select(ChatStatsModel).where(ChatStatsModel.chat_id == event.chat_id))
-            data = db_res.scalars().all()
-            if data and len(data) > 0:
-                for i, k in enumerate(data):
-                    time = format_seconds_to_hhmmss(k.time)
-                    result += f"{i + 1}. {k.username} - {time}\n"
-                await event.respond(result)
+#     if event.raw_text.lower() == "кто больше всех жмет по клаве" or event.raw_text.lower() == "кто больше всех жмет по клаве?":
+#         start_week = (first_day - datetime.timedelta(days=7)).strftime("%d.%m.%Y")
+#         end_week = (first_day - datetime.timedelta(days=1)).strftime("%d.%m.%Y")
+#         result = f"Лучшие мастера клавишного джаза за неделю {start_week} - {end_week}\n"
+#         async with async_session() as session:
+#             db_res = await session.execute(select(ChatStatsModel).where(ChatStatsModel.chat_id == event.chat_id))
+#             data = db_res.scalars().all()
+#             if data and len(data) > 0:
+#                 for i, k in enumerate(data):
+#                     time = format_seconds_to_hhmmss(k.time)
+#                     result += f"{i + 1}. {k.username} - {time}\n"
+#                 await event.respond(result)
 
 
 async def update_online():
