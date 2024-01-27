@@ -34,5 +34,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
+          docker stop typing_count_bot
+          docker rm typing_count_bot
           docker pull kin4stat/typing_count_bot:latest
           docker run --restart=always --name typing_count -e "TG_API_HASH=${{ secrets.TG_API_HASH }}" -e "TG_API_ID=${{ secrets.TG_API_ID }}" -v typing_count_volume:/persistent -p 127.0.0.1:25424:25424 -d kin4stat/typing_count_bot:latest
