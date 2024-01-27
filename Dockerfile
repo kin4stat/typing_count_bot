@@ -9,6 +9,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Копируйте исходный код в контейнер
+COPY ./database ./
 COPY ./main.py ./
 
 # Запуск скрипта
