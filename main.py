@@ -44,8 +44,8 @@ asyncio.set_event_loop(loop)
 API_ID = os.environ['TG_API_ID']
 API_HASH = os.environ['TG_API_HASH']
 
-API_ID = 24709427
-API_HASH = 'a42bb616d015637f886577ecc9fadc41'
+#API_ID = 24709427
+#API_HASH = 'a42bb616d015637f886577ecc9fadc41'
 client = TelegramClient('/persistent/typing_session', API_ID, API_HASH, system_version="1.01", loop=loop)
 
 timings = {}
@@ -135,15 +135,17 @@ async def update_timings(chat_id, user_id):
 
 @client.on(events.UserUpdate)
 async def handler(update: events.UserUpdate):
+    print(1)
     if not isinstance(update.original_update, (types.UpdateChatUserTyping, types.UpdateChannelUserTyping)):
         return
-
+    print(2)
     await update_weekly_stats()
-
+    print(3)
     chat_id = update.chat_id
     from_id = update.sender_id
 
     if chat_members.get(chat_id, None) is None:
+        print(4)
         chat_members.setdefault(chat_id, dict())
         async for user in update.client.iter_participants(await update.get_input_chat()):
             if user.last_name:
@@ -151,6 +153,8 @@ async def handler(update: events.UserUpdate):
             else:
                 name = user.first_name
             chat_members[chat_id][user.id] = name
+        print(5)
+    print(6)
     timings.setdefault(chat_id, dict())
     timings[chat_id].setdefault(from_id, dict())
     now = datetime.datetime.now()
