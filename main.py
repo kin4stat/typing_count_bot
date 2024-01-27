@@ -41,10 +41,11 @@ async def weekly_stats(chat_id):
 
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
-
 API_ID = os.environ['TG_API_ID']
 API_HASH = os.environ['TG_API_HASH']
 
+API_ID = 24709427
+API_HASH = 'a42bb616d015637f886577ecc9fadc41'
 client = TelegramClient('/persistent/typing_session', API_ID, API_HASH, system_version="1.01", loop=loop)
 
 timings = {}
@@ -191,7 +192,7 @@ async def main():
     await client.start()
     asyncio.create_task(update_online())
 
-    config = uvicorn.Config("main:app", port=25424, log_level="info")
+    config = uvicorn.Config("main:app", host="0.0.0.0", port=25424, log_level="info")
     server = uvicorn.Server(config)
     asyncio.create_task(server.serve())
     await client.run_until_disconnected()
